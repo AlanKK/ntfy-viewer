@@ -30,8 +30,10 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
+        // Strips types only; type checking is done by `tsc` (npm run typecheck)
         test: /\.tsx?$/,
-        use: "ts-loader",
+        loader: "esbuild-loader",
+        options: { target: "es2022" },
         exclude: /node_modules/,
       },
     ],

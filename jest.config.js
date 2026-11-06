@@ -1,12 +1,15 @@
 module.exports = {
   transform: {
+    // Strips types only; type checking is done by `tsc` (npm run typecheck)
     "^.+\\.tsx?$": [
-      "ts-jest",
+      "@swc/jest",
       {
-        // ts-jest compiles each file with options TypeScript 6 flags, and with
-        // noEmitOnError that yields no output ("Unable to process ..."). Type
-        // errors are still reported through ts-jest's own diagnostics.
-        tsconfig: { noEmitOnError: false },
+        jsc: {
+          parser: { syntax: "typescript", tsx: true },
+          transform: { react: { runtime: "classic" } },
+          target: "es2022",
+        },
+        module: { type: "commonjs" },
       },
     ],
   },
