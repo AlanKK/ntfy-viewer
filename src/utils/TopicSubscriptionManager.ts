@@ -36,14 +36,18 @@ export default class TopicSubscriptionManager {
     const storedData = await storage.sync.get({
       [BROWSER_TOPIC_CONFIGS_STORAGE_KEY]: {},
     });
-    return Object.values(storedData[BROWSER_TOPIC_CONFIGS_STORAGE_KEY]);
+    return Object.values(
+      storedData[BROWSER_TOPIC_CONFIGS_STORAGE_KEY] as Record<string, Topic>,
+    );
   }
 
   private async getLastSeenTimes(): Promise<LastSeenTimes> {
     const storedData = await storage.local.get([
       TOPIC_SUBSCRIPTION_MANAGER_STORAGE_KEY,
     ]);
-    return storedData?.[TOPIC_SUBSCRIPTION_MANAGER_STORAGE_KEY]?.lastSeen || {};
+    const value = storedData?.[TOPIC_SUBSCRIPTION_MANAGER_STORAGE_KEY] as
+      { lastSeen?: LastSeenTimes } | undefined;
+    return value?.lastSeen || {};
   }
 
   private async setLastSeenTime(topicId: string, time: number) {

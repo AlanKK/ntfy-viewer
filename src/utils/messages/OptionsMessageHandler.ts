@@ -9,7 +9,7 @@ export const enum OptionsMessageType {}
 
 export interface OptionsMessage {
   type: OptionsMessageType;
-  data: any;
+  data: unknown;
 }
 
 export default class OptionsMessageHandler extends MessageHandler<

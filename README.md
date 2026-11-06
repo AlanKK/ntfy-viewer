@@ -28,8 +28,8 @@ Contributions are welcome. Fork this repository and follow the steps below.
 
 ### Prerequisites
 
-- [Node](https://nodejs.org/) >= 19
-- [NPM](https://npmjs.org/) >= 9
+- [Node](https://nodejs.org/) >= 20.9
+- [NPM](https://npmjs.org/) >= 10
 
 ### Setup
 

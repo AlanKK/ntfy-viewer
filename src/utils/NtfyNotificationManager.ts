@@ -8,6 +8,10 @@ import { BadgeNumberManagerInterface } from "./BadgeNumberManager";
 import { NtfyNotification } from "../types/ntfy";
 import { NTFY_NOTIFICATION_MANAGER_STORAGE_KEY } from "./constants";
 
+export interface NtfyNotificationManagerStorage {
+  notificationCache: NtfyNotification[];
+}
+
 export default class NtfyNotificationManager {
   private static instance: NtfyNotificationManager;
 
@@ -31,7 +35,8 @@ export default class NtfyNotificationManager {
     const storageValue = await storage.local.get([
       NTFY_NOTIFICATION_MANAGER_STORAGE_KEY,
     ]);
-    const value = storageValue?.[NTFY_NOTIFICATION_MANAGER_STORAGE_KEY];
+    const value = storageValue?.[NTFY_NOTIFICATION_MANAGER_STORAGE_KEY] as
+      NtfyNotificationManagerStorage | undefined;
     if (value) {
       NtfyNotificationManager.instance.notificationCache =
         value.notificationCache;
@@ -182,7 +187,8 @@ export default class NtfyNotificationManager {
     });
 
     storage.local.onChanged.addListener((changes) => {
-      const newValue = changes[NTFY_NOTIFICATION_MANAGER_STORAGE_KEY]?.newValue;
+      const newValue = changes[NTFY_NOTIFICATION_MANAGER_STORAGE_KEY]
+        ?.newValue as NtfyNotificationManagerStorage | undefined;
       if (!newValue) return;
 
       this.notificationCache = newValue.notificationCache;

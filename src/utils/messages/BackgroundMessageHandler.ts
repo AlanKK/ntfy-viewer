@@ -13,7 +13,7 @@ export const enum BackgroundMessageType {
 
 export interface BackgroundMessage {
   type: BackgroundMessageType;
-  data: any;
+  data: unknown;
 }
 
 export default class BackgroundMessageHandler extends MessageHandler<

@@ -23,7 +23,7 @@ export const storage: DeepPartial<Storage.Static> = {
         keys.reduce<Record<string, unknown>>((acc, key) => {
           acc[key] = storedValues[key];
           return acc;
-        }, {})
+        }, {}),
       );
     }),
     clear: jest.fn(() => {
@@ -43,7 +43,7 @@ export const action: Partial<Action.Static> = {
 let notificationClickListeners: ((notificationId: string) => void)[] = [];
 const __triggerNotificationClickListeners = (notificationId: string) => {
   return Promise.all(
-    notificationClickListeners.map((callback) => callback(notificationId))
+    notificationClickListeners.map((callback) => callback(notificationId)),
   );
 };
 
@@ -57,9 +57,6 @@ export const notifications: Partial<Notifications.Static> & {
     }),
     hasListener: jest.fn((callback) => {
       return notificationClickListeners.includes(callback);
-    }),
-    hasListeners: jest.fn(() => {
-      return !!notificationClickListeners.length;
     }),
     addListener: jest.fn((callback) => {
       notificationClickListeners.push(callback);

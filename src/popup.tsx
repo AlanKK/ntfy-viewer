@@ -17,7 +17,7 @@ import {
   ThemeProvider,
   Typography,
 } from "@mui/material";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutlined";
 import PopupContent from "./components/PopupContent";
 import SettingsIcon from "@mui/icons-material/Settings";
 import theme from "./utils/theme";
@@ -177,7 +177,6 @@ const Popup = () => {
   );
 };
 
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const rootElement = document.getElementById("root")!;
 const root = createRoot(rootElement);
 root.render(

@@ -7,6 +7,10 @@ export interface BadgeNumberManagerInterface {
   reset: () => Promise<void>;
 }
 
+interface BadgeNumberManagerStorage {
+  currentNumber: number;
+}
+
 export default class BadgeNumberManager implements BadgeNumberManagerInterface {
   private static instance: BadgeNumberManager;
 
@@ -23,7 +27,8 @@ export default class BadgeNumberManager implements BadgeNumberManagerInterface {
     const storageValue = await storage.local.get([
       BADGE_NUMBER_MANAGER_STORAGE_KEY,
     ]);
-    const value = storageValue?.[BADGE_NUMBER_MANAGER_STORAGE_KEY];
+    const value = storageValue?.[BADGE_NUMBER_MANAGER_STORAGE_KEY] as
+      BadgeNumberManagerStorage | undefined;
     if (value) {
       BadgeNumberManager.instance.currentNumber = value.currentNumber;
     }
@@ -75,7 +80,8 @@ export default class BadgeNumberManager implements BadgeNumberManagerInterface {
 
   startListeners() {
     storage.local.onChanged.addListener((changes) => {
-      const newValue = changes[BADGE_NUMBER_MANAGER_STORAGE_KEY]?.newValue;
+      const newValue = changes[BADGE_NUMBER_MANAGER_STORAGE_KEY]?.newValue as
+        BadgeNumberManagerStorage | undefined;
       if (!newValue) return;
 
       this.currentNumber = newValue.currentNumber;
