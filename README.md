@@ -2,13 +2,29 @@
 
 # ntfy Viewer
 
-Unofficial browser extension for [ntfy](https://github.com/binwiederhier/ntfy). The aim is to support Chrome and Firefox, but it's build so that other browsers that support the webextension API can be added in the future.
+A browser extension that receives [ntfy](https://github.com/binwiederhier/ntfy) messages in the background and shows them as desktop notifications and in a list you can open from the toolbar. You don't need an ntfy page open to get them.
 
-**Please note: this project is still under heavy development, and should so be considered a beta.** Star & watch this repository to keep track of future updates. Once considered stable I will publish the extension.
+Deleting a message removes it everywhere. Delete all in the popup deletes the messages from the ntfy server, so they also disappear from the ntfy apps and from this extension on your other computers.
+
+> Unofficial, and not affiliated with ntfy. Supports Chrome and Firefox.
+
+## Features
+
+- Subscribe to any number of ntfy topics on ntfy.sh or your own server, with optional access tokens.
+- Desktop notifications with ntfy titles, priorities, tags and emoji, and click-through links.
+- A popup listing recent messages, with a badge count for unread ones.
+- **Server-side deletes:** Delete all removes messages from the server. Deletes sent by any other client (the ntfy apps, `curl`, or another copy of this extension) are applied as they arrive.
+- Reconnects after the browser sleeps or the connection drops, and fetches anything missed while offline.
+
+## Credits
+
+This project is based on [ntfy-browser](https://github.com/johman10/ntfy-browser) by **Johan van Eck**, an unofficial ntfy browser extension released under the MIT License. Thanks to Johan for the original work, which this project builds on.
+
+The original project is licensed under the MIT License, and this fork keeps that license. See [LICENSE](./LICENSE).
 
 ## Contributing
 
-This project aims to encourage others to contribute. Feel free to do so by forking this repository and follow the steps below.
+Contributions are welcome. Fork this repository and follow the steps below.
 
 ### Prerequisites
 
@@ -17,38 +33,36 @@ This project aims to encourage others to contribute. Feel free to do so by forki
 
 ### Setup
 
-Install dependencies and watch for file changes
+Install dependencies and watch for file changes:
 
 ```
 npm install
 npm start
 ```
 
-By default this will build and watch changes for Chrome. Alternatively you can start for a specific browser by doing:
+This builds and watches for changes in Chrome by default. To build for Firefox instead:
 
 ```
 npm run start:firefox
 ```
 
-Add the extension to the browser by following the respective instructions:
+Load the extension in your browser:
 
 - [Chrome](https://support.google.com/chrome/a/answer/2714278?hl=en#:~:text=Step%202%3A%20Test%20the%20app%20or%20extension)
 - [Firefox](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#installing)
 
-The files for the extension will live in the `dist/[browser]` folder.
-
-Please note that some changes will require you to refresh the browser extension before testing.
+The built files live in `dist/[browser]`. Some changes need the extension to be reloaded before you can test them.
 
 ### Test
 
-Some automated test are present. You can run them with: `npm test`
+```
+npm test
+```
 
 ### Production build
-
-If you want to test for production you can use:
 
 ```
 npm run build
 ```
 
-This will build the extension in a production manner for all configured browsers.
+This builds the extension for all configured browsers and packages them as zip files in `dist/`.
