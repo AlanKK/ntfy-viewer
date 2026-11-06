@@ -49,8 +49,18 @@ export interface NtfyNotification {
   id: string;
   time: number;
   expires: number;
-  event: "open" | "keepalive" | "message" | "poll_request";
+  event:
+    | "open"
+    | "keepalive"
+    | "message"
+    | "poll_request"
+    | "message_delete"
+    | "message_clear";
   topic: string;
+  // Groups a message with its later updates/deletes; defaults to the id
+  sequence_id?: string;
+  // Added by the extension: id of the topic config it was received on
+  topicId?: string;
   message?: string;
   title?: string;
   tags?: string[];

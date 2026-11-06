@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "ntfy-browser",
+  "name": "ntfy Viewer",
   "description": "__MSG_extensionDescription__",
-  "version": "1.0",
+  "version": "1.0.0",
   "default_locale": "en",
   "options_ui": {
     "page": "options.html",
@@ -18,9 +18,7 @@
   },
   "background": {
     "__chrome__service_worker": "js/background.js",
-    "__firefox__scripts": [
-      "js/background.js"
-    ]
+    "__firefox__scripts": ["js/background.js"]
   },
   "__firefox__browser_specific_settings": {
     "gecko": {
@@ -28,11 +26,12 @@
       "strict_min_version": "110.0"
     }
   },
-  "permissions": [
-    "storage",
-    "notifications"
-  ],
-  "host_permissions": [
-    "<all_urls>"
-  ]
+  "permissions": ["storage", "notifications", "alarms"],
+  "host_permissions": ["<all_urls>"],
+  "icons": {
+    "16": "ntfy-16.png",
+    "32": "ntfy-32.png",
+    "48": "ntfy-48.png",
+    "128": "ntfy-128.png"
+  }
 }

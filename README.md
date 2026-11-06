@@ -1,6 +1,6 @@
 ![ntfy logo](./public/ntfy.svg)
 
-# ntfy-browser
+# ntfy Viewer
 
 Unofficial browser extension for [ntfy](https://github.com/binwiederhier/ntfy). The aim is to support Chrome and Firefox, but it's build so that other browsers that support the webextension API can be added in the future.
 

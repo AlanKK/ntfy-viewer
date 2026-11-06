@@ -14,18 +14,18 @@ export default class NtfyNotificationManager {
   private notificationCache: NtfyNotification[] = [];
 
   private constructor(
-    private badgeNumberManager: BadgeNumberManagerInterface
+    private badgeNumberManager: BadgeNumberManagerInterface,
   ) {}
 
   static async init(
     badgeNumberManager: BadgeNumberManagerInterface,
-    reset = false
+    reset = false,
   ) {
     if (!reset && NtfyNotificationManager.instance) {
       return NtfyNotificationManager.instance;
     }
     NtfyNotificationManager.instance = new NtfyNotificationManager(
-      badgeNumberManager
+      badgeNumberManager,
     );
 
     const storageValue = await storage.local.get([
@@ -42,7 +42,7 @@ export default class NtfyNotificationManager {
 
   private getNotificationById(notificationId: string) {
     return this.notificationCache.find(
-      (notification) => notification.id === notificationId
+      (notification) => notification.id === notificationId,
     );
   }
 
@@ -59,6 +59,10 @@ export default class NtfyNotificationManager {
       this.notificationCache.shift();
     }
 
+    await this.saveCache();
+  }
+
+  private async saveCache() {
     const storageValue = await storage.local.get([
       NTFY_NOTIFICATION_MANAGER_STORAGE_KEY,
     ]);
@@ -94,7 +98,7 @@ export default class NtfyNotificationManager {
   }
 
   private getBaseNotificationOptions(
-    notification: NtfyNotification
+    notification: NtfyNotification,
   ): Omit<Notifications.CreateNotificationOptions, "type"> {
     let priority = (notification.priority || 0) - 3;
     if (priority < 0) {
@@ -112,7 +116,7 @@ export default class NtfyNotificationManager {
   }
 
   private getNotificationOptions(
-    notification: NtfyNotification
+    notification: NtfyNotification,
   ): Notifications.CreateNotificationOptions {
     if (
       notification.attachment &&
@@ -132,13 +136,41 @@ export default class NtfyNotificationManager {
   }
 
   async publish(notification: NtfyNotification) {
+    // Reconnecting re-fetches recent messages; don't show them twice
+    if (this.getNotificationById(notification.id)) {
+      return;
+    }
+
     await notifications.create(
       notification.id,
-      this.getNotificationOptions(notification)
+      this.getNotificationOptions(notification),
     );
     await this.addToCache(notification);
 
     await this.badgeNumberManager.higher();
+  }
+
+  /**
+   * Removes every cached notification in the given sequence (used when the
+   * server reports it was deleted) and closes its desktop notification.
+   */
+  async remove(sequenceId: string) {
+    const toRemove = this.notificationCache.filter(
+      (notification) =>
+        (notification.sequence_id || notification.id) === sequenceId,
+    );
+    if (!toRemove.length) return;
+
+    this.notificationCache = this.notificationCache.filter(
+      (notification) => !toRemove.includes(notification),
+    );
+    await Promise.all(
+      toRemove.map((notification) => notifications.clear(notification.id)),
+    );
+    await this.saveCache();
+    for (let i = 0; i < toRemove.length; i++) {
+      await this.badgeNumberManager.lower();
+    }
   }
 
   startListeners() {

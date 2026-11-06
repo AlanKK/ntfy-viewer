@@ -1,6 +1,6 @@
 {
   "extensionDescription": {
-    "message": "A ntfy-browser extension to receive notifications without having the page open",
+    "message": "Receive ntfy notifications in your browser, even when no ntfy page is open.",
     "description": "Description of the extension."
   },
   "optionsTitle": {
@@ -94,7 +94,7 @@
     }
   },
   "errorBoundaryTitle": {
-    "message": "Oh no, ntfy-browser crashed",
+    "message": "Oh no, ntfy Viewer crashed",
     "description": "Title when an unexpected error occurs"
   },
   "errorBoundaryDescription": {
@@ -138,5 +138,39 @@
   "notificationActionCopyLink": {
     "message": "Copy link",
     "description": "Button label which allows to copy the link linked to the notification action"
+  },
+  "popupNotificationsTitle": {
+    "message": "Notifications",
+    "description": "Heading above the notification list in the popup."
+  },
+  "popupDeleteAll": {
+    "message": "Delete all",
+    "description": "Button that deletes all notifications from the server."
+  },
+  "popupDeleteAllConfirmTitle": {
+    "message": "Delete all notifications?",
+    "description": "Title of the delete all confirmation dialog."
+  },
+  "popupDeleteAllConfirmMessage": {
+    "message": "This deletes them from the ntfy server, so they disappear from every app subscribed to these topics.",
+    "description": "Body of the delete all confirmation dialog."
+  },
+  "popupDeleteAllCancel": {
+    "message": "Cancel",
+    "description": "Cancel button in the delete all confirmation dialog."
+  },
+  "popupDeleteAllFailed": {
+    "message": "$COUNT$ notification(s) could not be deleted from the server. Check the topic token has write access.",
+    "description": "Shown when some deletes fail.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "popupEmpty": {
+    "message": "No notifications",
+    "description": "Shown when the notification list is empty."
   }
 }

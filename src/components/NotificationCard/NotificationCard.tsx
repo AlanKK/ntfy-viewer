@@ -76,7 +76,7 @@ export default function PopupContent({
       {notification.message && (
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary">
-            {formattedDateTime}
+            {formattedDateTime} · {notification.topic}
             {notification.priority && notification.priority !== 3 && (
               <img
                 style={{ verticalAlign: "middle" }}
@@ -85,7 +85,7 @@ export default function PopupContent({
             )}
           </Typography>
           {!!notification.title && (
-            <Typography variant="h5">
+            <Typography variant="h6" sx={{ fontSize: 18, lineHeight: 1.3 }}>
               {getEmojiTags(notification.tags)} {notification.title}
             </Typography>
           )}

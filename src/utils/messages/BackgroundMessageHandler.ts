@@ -41,7 +41,7 @@ export default class BackgroundMessageHandler extends MessageHandler<
           .map((eventResponse) => eventResponse.topic.name)
           .join(", ");
         this.errorHandler.report(
-          new Error(`[ntfy-browser] Unable to connect to ${failedTopicNames}`),
+          new Error(`[ntfy Viewer] Unable to connect to ${failedTopicNames}`),
           failedTopicNames,
         );
       }
