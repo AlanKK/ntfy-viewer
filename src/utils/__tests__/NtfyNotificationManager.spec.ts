@@ -25,7 +25,7 @@ describe("NtfyNotificationManager", () => {
 
     jest.isolateModules(() => {
       const module = jest.requireActual<NtfyNotificationManagerImport>(
-        "../NtfyNotificationManager"
+        "../NtfyNotificationManager",
       );
       NtfyNotificationManager = module.default;
     });
@@ -34,10 +34,10 @@ describe("NtfyNotificationManager", () => {
   it("is a singleton", async () => {
     const ntfyNotificationManager1 = await NtfyNotificationManager.init(
       mockBadgeNumberManager,
-      true
+      true,
     );
     const ntfyNotificationManager2 = await NtfyNotificationManager.init(
-      mockBadgeNumberManager
+      mockBadgeNumberManager,
     );
 
     expect(ntfyNotificationManager1).toBe(ntfyNotificationManager2);
@@ -52,7 +52,7 @@ describe("NtfyNotificationManager", () => {
 
     const ntfyNotificationManager = await NtfyNotificationManager.init(
       mockBadgeNumberManager,
-      true
+      true,
     );
     expect(ntfyNotificationManager.getAll()[0]).toBe(ntfyNotificationClick);
     expect(ntfyNotificationManager.getAll()[1]).toBe(ntfyNotificationMinimal);
@@ -68,7 +68,7 @@ describe("NtfyNotificationManager", () => {
     beforeEach(async () => {
       ntfyNotificationManager = await NtfyNotificationManager.init(
         mockBadgeNumberManager,
-        true
+        true,
       );
 
       ntfyNotificationManager.publish(notification1);
@@ -77,7 +77,7 @@ describe("NtfyNotificationManager", () => {
 
     it("returns a list of notifications", () => {
       expect(ntfyNotificationManager.getAll()).toEqual(
-        expect.arrayContaining([notification1, notification2])
+        expect.arrayContaining([notification1, notification2]),
       );
       expect(ntfyNotificationManager.getAll()).toHaveLength(2);
     });
@@ -94,7 +94,7 @@ describe("NtfyNotificationManager", () => {
     beforeEach(async () => {
       ntfyNotificationManager = await NtfyNotificationManager.init(
         mockBadgeNumberManager,
-        true
+        true,
       );
     });
 
@@ -119,15 +119,18 @@ describe("NtfyNotificationManager", () => {
       await Promise.all(
         Array.from(Array(55)).map(() => {
           ntfyNotificationManager.publish(ntfyNotificationMinimal);
-        })
+        }),
       );
 
       expect(ntfyNotificationManager.getAll()).toHaveLength(50);
       const storageValue = await storage.local.get([
         NTFY_NOTIFICATION_MANAGER_STORAGE_KEY,
       ]);
-      const storedCache =
-        storageValue[NTFY_NOTIFICATION_MANAGER_STORAGE_KEY].notificationCache;
+      const storedCache = (
+        storageValue[NTFY_NOTIFICATION_MANAGER_STORAGE_KEY] as {
+          notificationCache: unknown[];
+        }
+      ).notificationCache;
       expect(storedCache).toHaveLength(50);
     });
 
@@ -152,7 +155,7 @@ describe("NtfyNotificationManager", () => {
             priority: 0,
             title: ntfyNotificationMinimal.topic,
             type: "basic",
-          }
+          },
         );
       });
 
@@ -171,7 +174,7 @@ describe("NtfyNotificationManager", () => {
             title: ntfyNotificationImageAttachment.topic,
             imageUrl: "https://google.com/something.png",
             type: "image",
-          }
+          },
         );
       });
 
@@ -189,7 +192,7 @@ describe("NtfyNotificationManager", () => {
             priority: 0,
             title: ntfyNotificationClick.topic,
             type: "basic",
-          }
+          },
         );
       });
 
@@ -207,7 +210,7 @@ describe("NtfyNotificationManager", () => {
             priority: 0,
             title: ntfyNotificationTitle.title,
             type: "basic",
-          }
+          },
         );
       });
 
@@ -225,7 +228,7 @@ describe("NtfyNotificationManager", () => {
             priority: 2,
             title: "Test Topic",
             type: "basic",
-          }
+          },
         );
       });
     });
@@ -237,7 +240,7 @@ describe("NtfyNotificationManager", () => {
     beforeEach(async () => {
       ntfyNotificationManager = await NtfyNotificationManager.init(
         mockBadgeNumberManager,
-        true
+        true,
       );
       // Mocked version removes all previous listeners
       notifications.onClicked.removeListener(() => {});

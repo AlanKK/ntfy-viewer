@@ -28,8 +28,8 @@ Contributions are welcome. Fork this repository and follow the steps below.
 
 ### Prerequisites
 
-- [Node](https://nodejs.org/) >= 19
-- [NPM](https://npmjs.org/) >= 9
+- [Node](https://nodejs.org/) >= 20.9
+- [NPM](https://npmjs.org/) >= 10
 
 ### Setup
 
@@ -56,8 +56,12 @@ The built files live in `dist/[browser]`. Some changes need the extension to be 
 ### Test
 
 ```
-npm test
+npm test          # unit tests
+npm run typecheck # type checking with TypeScript 7
+npm run lint
 ```
+
+The webpack and Jest builds only strip types (via esbuild and SWC), so `npm start` doesn't report type errors. Run `npm run typecheck` for those; production builds run it automatically.
 
 ### Production build
 

@@ -7,7 +7,9 @@ async function getTopicConfigs(): Promise<Topic[]> {
   const storedData = await storage.sync.get({
     [BROWSER_TOPIC_CONFIGS_STORAGE_KEY]: {},
   });
-  return Object.values(storedData[BROWSER_TOPIC_CONFIGS_STORAGE_KEY]);
+  return Object.values(
+    storedData[BROWSER_TOPIC_CONFIGS_STORAGE_KEY] as Record<string, Topic>,
+  );
 }
 
 /**

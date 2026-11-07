@@ -5,8 +5,7 @@ import {
   ThemeProvider,
   Typography,
 } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import Grid from "@mui/material/Grid";
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { i18n, storage } from "webextension-polyfill";
@@ -59,8 +58,9 @@ const Options = () => {
       })
       .then((browserStorage) => {
         reset({
-          [BROWSER_TOPIC_CONFIGS_STORAGE_KEY]:
-            browserStorage[BROWSER_TOPIC_CONFIGS_STORAGE_KEY],
+          [BROWSER_TOPIC_CONFIGS_STORAGE_KEY]: browserStorage[
+            BROWSER_TOPIC_CONFIGS_STORAGE_KEY
+          ] as BrowserStorage[typeof BROWSER_TOPIC_CONFIGS_STORAGE_KEY],
         });
       });
   }, []);
@@ -71,7 +71,7 @@ const Options = () => {
 
       setLoading(true);
       storage.sync
-        .set(data)
+        .set({ ...data })
         .then(() => optionsMessageHandler.reconnectTopics())
         .then((failedResponses) => {
           if (failedResponses.length) {
@@ -104,7 +104,7 @@ const Options = () => {
       <ThemeProvider theme={theme}>
         <AppBar title={i18n.getMessage("optionsTitle")} />
         <Container>
-          <Grid2 component="form" container spacing={2} onSubmit={saveOptions}>
+          <Grid component="form" container spacing={2} onSubmit={saveOptions}>
             {topicConfigs.map((topicConfig, index) => (
               <TopicConfig
                 key={topicConfig.id}
@@ -115,14 +115,16 @@ const Options = () => {
               />
             ))}
             {!topicConfigs.length && (
-              <Grid2
+              <Grid
                 container
-                xs={12}
-                sx={{ marginTop: 2 }}
-                direction="column"
-                alignItems="center"
+                size={12}
+                sx={{
+                  marginTop: 2,
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
               >
-                <Typography variant="h5" textAlign="center">
+                <Typography variant="h5" sx={{ textAlign: "center" }}>
                   <img src="./ntfy-outline.svg" height="64" />
                   <br />
                   {i18n.getMessage("optionsEmptyTitle")}
@@ -130,28 +132,29 @@ const Options = () => {
                 <Typography>
                   {i18n.getMessage("optionsEmptyInstructions")}
                 </Typography>
-              </Grid2>
+              </Grid>
             )}
-            <Grid2 container xs={12} spacing={2} justifyContent="right">
-              <Grid2>
+            <Grid
+              container
+              size={12}
+              spacing={2}
+              sx={{ justifyContent: "right" }}
+            >
+              <Grid>
                 <Button
                   variant="contained"
                   onClick={() => appendTopicConfig(topicConfigFactory())}
                 >
                   {i18n.getMessage("optionsAddTopic")}
                 </Button>
-              </Grid2>
-              <Grid2>
-                <LoadingButton
-                  variant="contained"
-                  type="submit"
-                  loading={loading}
-                >
+              </Grid>
+              <Grid>
+                <Button variant="contained" type="submit" loading={loading}>
                   {i18n.getMessage("optionsSave")}
-                </LoadingButton>
-              </Grid2>
-            </Grid2>
-          </Grid2>
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
 
           <Snackbar
             open={!!snackbarMessage}
@@ -165,7 +168,6 @@ const Options = () => {
   );
 };
 
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const rootElement = document.getElementById("root")!;
 const root = createRoot(rootElement);
 root.render(

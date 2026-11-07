@@ -5,7 +5,7 @@ import {
   CardActions,
   Button,
 } from "@mui/material";
-import Grid2 from "@mui/material/Unstable_Grid2";
+import Grid from "@mui/material/Grid";
 import React from "react";
 import { UseFormRegister, FormState } from "react-hook-form";
 import { i18n } from "webextension-polyfill";
@@ -27,7 +27,7 @@ export default function TopicConfig({
   const topicErrors = errors?.[BROWSER_TOPIC_CONFIGS_STORAGE_KEY]?.[index];
 
   return (
-    <Grid2 xs={12}>
+    <Grid size={12}>
       <Card>
         <CardContent>
           <TextField
@@ -81,6 +81,6 @@ export default function TopicConfig({
           </Button>
         </CardActions>
       </Card>
-    </Grid2>
+    </Grid>
   );
 }

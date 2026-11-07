@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-env node */
-
 const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
 const srcDir = path.join(__dirname, "..", "src");
@@ -33,8 +30,10 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
+        // Strips types only; type checking is done by `tsc` (npm run typecheck)
         test: /\.tsx?$/,
-        use: "ts-loader",
+        loader: "esbuild-loader",
+        options: { target: "es2022" },
         exclude: /node_modules/,
       },
     ],

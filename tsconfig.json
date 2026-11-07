@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
     "strict": true,
-    "module": "commonjs",
-    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "target": "es2022",
     "esModuleInterop": true,
-    "sourceMap": false,
-    "rootDirs": ["src", "test"],
-    "outDir": "dist/js",
-    "noEmitOnError": true,
+    "isolatedModules": true,
+    "noEmit": true,
     "jsx": "react",
-    "typeRoots": ["node_modules/@types"]
+    "rootDirs": ["src", "test"],
+    "typeRoots": ["node_modules/@types"],
+    "types": ["jest"]
   }
 }

@@ -11,7 +11,7 @@ export default class MessageHandler<
 > {
   requests = new Map<
     MessageToHandle["type"],
-    (data: any, sender: Runtime.MessageSender) => void
+    (data: unknown, sender: Runtime.MessageSender) => void
   >();
 
   registerMessengerRequests() {
@@ -21,7 +21,9 @@ export default class MessageHandler<
   }
 
   listenForMessages() {
-    runtime.onMessage.addListener((message: MessageToHandle, sender) => {
+    // Returning the handler's promise sends its result back as the response
+    const listener = (rawMessage: unknown, sender: Runtime.MessageSender) => {
+      const message = rawMessage as MessageToHandle;
       const { type, data } = message;
       const handler = this.requests.get(type);
       if (!handler) {
@@ -29,16 +31,17 @@ export default class MessageHandler<
         return;
       }
       return handler(data, sender);
-    });
+    };
+    runtime.onMessage.addListener(listener);
   }
 
   protected async sendMessage<T>(
     type: SendingMessageType,
-    data: any = null,
+    data: unknown = null,
   ): Promise<T | null> {
     try {
       const response = await runtime.sendMessage({ type, data });
-      return response;
+      return response as T;
     } catch (error) {
       console.error("sendMessage error: ", error);
       return null;
